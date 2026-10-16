@@ -1,0 +1,428 @@
+@import "tailwindcss";
+
+@theme {
+  --color-black: #0A0A0A;
+  --color-dark: #111111;
+  --color-dark-card: #1A1A1A;
+  --color-orange: #F95804;
+  --color-yellow: #FFD84D;
+  --color-muted: #A8A8A3;
+}
+
+@layer base {
+  body {
+    @apply bg-[#0e0e0e] text-white;
+    font-family: 'Manrope', system-ui, -apple-system, sans-serif;
+  }
+}
+
+.bg-dot-pattern {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.12) 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+}
+
+.glass-panel {
+  @apply bg-[#151515]/60 backdrop-blur-xl border border-white/5 rounded-3xl relative overflow-hidden;
+}
+
+.glass-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.4) 1px, transparent 1px);
+  background-size: 24px 24px;
+  opacity: 0.03;
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: 0;
+}
+
+.glass-panel > * {
+  position: relative;
+  z-index: 10;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0A0A0A;
+}
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Custom Animated Button from Uiverse */
+.cssbuttons-io-button {
+  background: #f95804;
+  color: white;
+  font-family: inherit;
+  padding: 0.35em;
+  padding-left: 1.2em;
+  font-size: 15px;
+  font-weight: 700;
+  border-radius: 2em;
+  border: none;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  box-shadow: inset 0 0 1.6em -0.6em #c2410c;
+  overflow: hidden;
+  position: relative;
+  height: 2.8em;
+  padding-right: 3.3em;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.cssbuttons-io-button .icon {
+  background: white;
+  margin-left: 1em;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2.2em;
+  width: 2.2em;
+  border-radius: 2em;
+  box-shadow: 0.1em 0.1em 0.6em 0.2em rgba(249, 88, 4, 0.4);
+  right: 0.3em;
+  transition: all 0.3s;
+}
+
+.cssbuttons-io-button:hover .icon {
+  width: calc(100% - 0.6em);
+}
+
+.cssbuttons-io-button .icon svg {
+  width: 1.1em;
+  transition: transform 0.3s;
+  color: #f95804;
+}
+
+.cssbuttons-io-button:hover .icon svg {
+  transform: translateX(0.1em);
+}
+
+.cssbuttons-io-button:active .icon {
+  transform: scale(0.95);
+}
+
+/* Custom Download Button from Uiverse */
+.download-btn {
+  --color: white;
+  --hover-text: black;
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  padding: 0 1.5em;
+  height: 2.8em;
+  overflow: hidden;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 700;
+  z-index: 1;
+  color: var(--color);
+  border: 2px solid var(--color);
+  border-radius: 2em;
+  position: relative;
+  transition: color 0.3s;
+}
+
+.download-btn::before {
+  position: absolute;
+  content: "";
+  background: var(--color);
+  width: 300px;
+  height: 300px;
+  z-index: -1;
+  border-radius: 50%;
+  top: 100%;
+  left: 100%;
+  transition: 0.4s all cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.download-btn:hover {
+  color: var(--hover-text);
+}
+
+.download-btn:hover::before {
+  top: -50px;
+  left: -50px;
+}
+
+/* From Uiverse.io by r7chardgh */ 
+/* The switch - the box around the slider */
+.switch {
+  font-size: 11px;
+  position: relative;
+  display: inline-block;
+  width: 5em;
+  height: 2.5em;
+  user-select: none;
+}
+
+/* Hide default HTML checkbox */
+.switch .cb {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.toggle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  background-color: #373737;
+  border-radius: 0.1em;
+  transition: 0.4s;
+  text-transform: uppercase;
+  font-weight: 700;
+  overflow: hidden;
+  box-shadow: -0.3em 0 0 0 #373737, -0.3em 0.3em 0 0 #373737,
+    0.3em 0 0 0 #373737, 0.3em 0.3em 0 0 #373737, 0 0.3em 0 0 #373737;
+}
+
+.toggle > .left {
+  position: absolute;
+  display: flex;
+  width: 50%;
+  height: 88%;
+  background-color: #f3f3f3;
+  color: #373737;
+  left: 0;
+  bottom: 0;
+  align-items: center;
+  justify-content: center;
+  transform-origin: right;
+  transform: rotateX(10deg);
+  transform-style: preserve-3d;
+  transition: all 150ms;
+}
+
+.left::before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  background-color: rgb(206, 206, 206);
+  transform-origin: center left;
+  transform: rotateY(90deg);
+}
+
+.left::after {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  background-color: rgb(112, 112, 112);
+  transform-origin: center bottom;
+  transform: rotateX(90deg);
+}
+
+.toggle > .right {
+  position: absolute;
+  display: flex;
+  width: 50%;
+  height: 88%;
+  background-color: #f3f3f3;
+  color: rgb(206, 206, 206);
+  right: 1px;
+  bottom: 0;
+  align-items: center;
+  justify-content: center;
+  transform-origin: left;
+  transform: rotateX(10deg) rotateY(-45deg);
+  transform-style: preserve-3d;
+  transition: all 150ms;
+}
+
+.right::before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  background-color: rgb(206, 206, 206);
+  transform-origin: center right;
+  transform: rotateY(-90deg);
+}
+
+.right::after {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  background-color: rgb(112, 112, 112);
+  transform-origin: center bottom;
+  transform: rotateX(90deg);
+}
+
+.switch input:checked + .toggle > .left {
+  transform: rotateX(10deg) rotateY(45deg);
+  color: rgb(206, 206, 206);
+}
+
+.switch input:checked + .toggle > .right {
+  transform: rotateX(10deg) rotateY(0deg);
+  color: #487bdb;
+}
+
+/* =========================================
+   LIGHT MODE OVERRIDES
+   ========================================= */
+.light-mode {
+  background-color: #F8F9FA !important;
+  color: #1A1A1A !important;
+}
+
+/* Backgrounds */
+.light-mode .bg-\[\#0A0A0A\],
+.light-mode .bg-\[\#080808\],
+.light-mode .bg-\[\#0e0e0e\],
+.light-mode .bg-\[\#000\],
+.light-mode .bg-\[\#0F0F0F\],
+.light-mode .bg-\[\#0C0C0C\]\/80 {
+  background-color: #FFFFFF !important;
+}
+.light-mode .from-\[\#111\].to-\[\#0a0a0a\] {
+  background-image: linear-gradient(to bottom right, #FFFFFF, #F1F3F5) !important;
+}
+
+.light-mode .shadow-\[0_0_60px_rgba\(0\,0\,0\,0\.9\)\] {
+  box-shadow: 0 10px 40px rgba(0,0,0,0.15) !important;
+}
+/* Panels and Cards */
+.light-mode .glass-panel {
+  background-color: #FFFFFF !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04) !important;
+}
+
+.light-mode .bg-\[\#1A1A1A\],
+.light-mode .bg-\[\#111\],
+.light-mode .bg-\[\#161616\],
+.light-mode .bg-\[\#222\] {
+  background-color: #F1F3F5 !important;
+  color: #1A1A1A !important;
+  border-color: rgba(0,0,0,0.08) !important;
+}
+
+.light-mode .hover\:bg-\[\#222\]:hover {
+  background-color: #E9ECEF !important;
+}
+
+/* Borders and Overlays */
+.light-mode .border-white\/5,
+.light-mode .border-white\/10,
+.light-mode .border-white\/20,
+.light-mode .border-white\/50,
+.light-mode .border-white\/\[0\.05\],
+.light-mode .hover\:border-white\/20:hover {
+  border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+.light-mode .lanyard-wire {
+  background-image: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.2), rgba(0,0,0,0.5)) !important;
+}
+
+.light-mode .bg-white\/\[0\.05\],
+.light-mode .bg-white\/\[0\.03\],
+.light-mode .bg-white\/10 {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+/* Typography (Invert text-white to dark text) */
+.light-mode .text-white,
+.light-mode .text-\[\#F5F5F5\] { color: #111111 !important; }
+.light-mode .text-white\/90 { color: rgba(0,0,0,0.9) !important; }
+.light-mode .text-white\/80 { color: rgba(0,0,0,0.8) !important; }
+.light-mode .text-white\/70 { color: rgba(0,0,0,0.7) !important; }
+.light-mode .text-white\/60 { color: rgba(0,0,0,0.6) !important; }
+.light-mode .text-white\/50 { color: rgba(0,0,0,0.5) !important; }
+.light-mode .text-white\/40 { color: rgba(0,0,0,0.4) !important; }
+.light-mode .text-white\/30 { color: rgba(0,0,0,0.3) !important; }
+.light-mode .hover\:text-white:hover { color: #111111 !important; }
+.light-mode .text-\[\#A8A8A3\] { color: #555555 !important; }
+
+/* Keep white text white on vibrant badges, gradients, and buttons */
+.light-mode .bg-gradient-to-br .text-white,
+.light-mode [style*="color: #FFFFFF"],
+.light-mode [style*="color: rgb(255, 255, 255)"],
+.light-mode .group:hover .group-hover\:text-white,
+.light-mode .bg-orange-500,
+.light-mode .bg-\[\#FF5C00\] {
+  color: #FFFFFF !important;
+}
+
+/* The orange accents stay orange, so we don't override them */
+.light-mode .group:hover .group-hover\:text-orange-400 { color: #fb923c !important; }
+.light-mode .group:hover .group-hover\:bg-orange-500 { background-color: #f97316 !important; }
+.light-mode .group:hover .group-hover\:border-orange-400 { border-color: #fb923c !important; }
+
+/* Soften heavy shadows in Strengths section */
+.light-mode .shadow-\[0_0_20px_rgba\(0\,0\,0\,0\.5\)\] {
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08) !important;
+}
+
+/* Dot Pattern */
+.light-mode .bg-dot-pattern {
+  background-image: radial-gradient(rgba(0, 0, 0, 0.12) 1.5px, transparent 1.5px) !important;
+}
+
+/* Footer fade text */
+.light-mode .from-white\/10 {
+  --tw-gradient-from: rgba(0,0,0,0.1) !important;
+}
+.light-mode .from-\[\#000\] {
+  --tw-gradient-from: #F8F9FA !important;
+  --tw-gradient-to: rgba(248,249,250,0) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+}
+
+/* Certifications gradient */
+.light-mode .from-\[\#111\] {
+  --tw-gradient-from: #FFFFFF !important;
+}
+.light-mode .to-\[\#0a0a0a\] {
+  --tw-gradient-to: #F1F3F5 !important;
+}
+
+/* Buttons */
+.light-mode .cssbuttons-io-button {
+  background: #111 !important;
+  color: #fff !important;
+  box-shadow: inset 0 0 1.6em -0.6em #333 !important;
+}
+.light-mode .cssbuttons-io-button .icon {
+  background: #fff !important;
+  box-shadow: 0.1em 0.1em 0.6em 0.2em #ccc !important;
+}
+.light-mode .cssbuttons-io-button .icon svg {
+  color: #111 !important;
+}
+.light-mode .download-btn {
+  --color: #111 !important;
+  --hover-text: #fff !important;
+}
+
+/* Some specific UI components */
+.light-mode .bg-\[\#111\]\/70 {
+  background-color: rgba(255,255,255,0.8) !important;
+}
+.light-mode .hover\:bg-\[\#151515\]\/80:hover {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+}
+.light-mode .bg-\[\#161B22\] {
+  background-color: #EBEDF0 !important;
+}

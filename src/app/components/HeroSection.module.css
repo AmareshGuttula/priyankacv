@@ -1,0 +1,224 @@
+/* ─── Hero Section matching reference image ─── */
+.heroSection {
+  background: var(--black);
+  position: relative;
+  width: 100%;
+}
+
+/* White Hero Card with signature curved bottom */
+.whiteHeroCard {
+  background: #FFFFFF;
+  border-bottom-left-radius: 64px;
+  border-bottom-right-radius: 64px;
+  padding: 120px 0 0 0;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+}
+
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 2.5rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 40px;
+  align-items: flex-end;
+  min-height: 520px;
+}
+
+/* Left Column */
+.leftCol {
+  padding-bottom: 72px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Eyebrow pill matching reference */
+.eyebrowPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 18px;
+  border-radius: var(--radius-full);
+  background: #F3F3F0;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #4A4A45;
+  margin-bottom: 24px;
+  width: fit-content;
+  letter-spacing: -0.01em;
+}
+
+.eyebrowDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--yellow);
+}
+
+/* Big bold headline: Building World- Class Software Solutions. */
+.headline {
+  font-size: clamp(3rem, 5.2vw, 4.35rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  color: var(--black);
+  margin-bottom: 22px;
+}
+
+.period {
+  color: var(--black);
+}
+
+/* Subheadline */
+.subheadline {
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  color: #616161;
+  max-width: 480px;
+  margin-bottom: 34px;
+}
+
+/* CTA Group: Yellow Get Started + Outlined See Our Work */
+.ctaGroup {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.btnPrimary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 34px;
+  background: var(--yellow);
+  color: var(--black);
+  font-weight: 700;
+  font-size: 0.9375rem;
+  border-radius: var(--radius-full);
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+}
+
+.btnPrimary:hover {
+  background: var(--yellow-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(255, 216, 77, 0.35);
+}
+
+.btnSecondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 13px 30px;
+  background: #FFFFFF;
+  color: var(--black);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  border-radius: var(--radius-full);
+  border: 1.5px solid var(--black);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+}
+
+.btnSecondary:hover {
+  background: var(--black);
+  color: var(--pure-white);
+  transform: translateY(-2px);
+}
+
+/* Right Column: Mascot Portrait */
+.rightCol {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  position: relative;
+  line-height: 0;
+}
+
+.portraitWrapper {
+  width: 100%;
+  max-width: 470px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.portraitImg {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  max-height: 560px;
+  display: block;
+}
+
+/* ─── Responsive Adjustments ─── */
+@media (max-width: 1024px) {
+  .whiteHeroCard {
+    padding-top: 110px;
+  }
+  .grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .headline {
+    font-size: clamp(2.5rem, 4.5vw, 3.5rem);
+  }
+  .portraitWrapper {
+    max-width: 380px;
+  }
+}
+
+@media (max-width: 768px) {
+  .whiteHeroCard {
+    padding-top: 96px;
+    border-bottom-left-radius: 40px;
+    border-bottom-right-radius: 40px;
+  }
+  .container {
+    padding: 0 1.5rem;
+  }
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    text-align: center;
+  }
+  .leftCol {
+    padding-bottom: 0;
+    align-items: center;
+  }
+  .subheadline {
+    text-align: center;
+  }
+  .ctaGroup {
+    justify-content: center;
+  }
+  .portraitWrapper {
+    max-width: 320px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .headline {
+    font-size: 2.25rem;
+  }
+  .ctaGroup {
+    flex-direction: column;
+    width: 100%;
+  }
+  .btnPrimary,
+  .btnSecondary {
+    width: 100%;
+  }
+}
+
