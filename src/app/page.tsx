@@ -1,9 +1,14 @@
 "use client";
 
 import Image from "next/image";
-import { motion, Variants, useScroll, useTransform } from "framer-motion";
+import { AnimatePresence, motion, Variants, useScroll, useTransform } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
-import { Calendar, Award, BookOpen, MapPin, Megaphone, Network, BrainCircuit, Orbit, Languages } from "lucide-react";
+import { 
+  Calendar, Award, BookOpen, MapPin, Megaphone, Network, 
+  BrainCircuit, Orbit, Languages, Menu, X, Sun, Moon, 
+  ArrowUpRight, Briefcase, Sparkles, Mail, User, ChevronRight, 
+  Download, Code2 
+} from "lucide-react";
 import { profile, projects, experience, skills, strengths, certifications, education } from "@/data/profile";
 import Hero from "./components/Hero";
 
@@ -12,6 +17,7 @@ export default function Home() {
   const [certIndex, setCertIndex] = useState(0);
   const [activeSection, setActiveSection] = useState("about");
   const [isLightMode, setIsLightMode] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [selectedCert, setSelectedCert] = useState<{
     title: string;
     subtitle?: string;
@@ -22,13 +28,57 @@ export default function Home() {
     credentialId?: string;
   } | null>(null);
 
+  const navItems = [
+    { id: "about", label: "About", icon: User, subtitle: "Bio & Education" },
+    { id: "projects", label: "Works", icon: Briefcase, subtitle: "Featured Projects" },
+    { id: "experience", label: "Experience", icon: Code2, subtitle: "Skills & Timeline" },
+    { id: "certifications", label: "Certifications", icon: Award, subtitle: "9+ Verified Credentials" },
+    { id: "strengths", label: "Strengths", icon: BrainCircuit, subtitle: "Core Capabilities" },
+    { id: "contact", label: "Contact", icon: Mail, subtitle: "Get In Touch" },
+  ];
+
+  const handleNavClick = (id: string) => {
+    setMobileMenuOpen(false);
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  // Keyboard navigation & drawer dismissal
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setSelectedCert(null);
+      if (e.key === "Escape") {
+        setSelectedCert(null);
+        setMobileMenuOpen(false);
+      }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
+
+  // Close mobile drawer on desktop resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setMobileMenuOpen(false);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
 
   // Active Section Scroll Spy
   useEffect(() => {
@@ -41,7 +91,7 @@ export default function Home() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ["about", "projects", "experience", "contact"];
+      const sections = ["about", "projects", "experience", "certifications", "strengths", "contact"];
       let current = activeSection;
       for (const section of sections) {
         const element = document.getElementById(section);
@@ -87,41 +137,282 @@ export default function Home() {
       {/* Background Dot Pattern */}
       <div className="fixed inset-0 z-0 bg-dot-pattern pointer-events-none opacity-60" />
 
-      {/* --- FLOATING NAVBAR --- */}
-      <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-full max-w-3xl px-4 pointer-events-none flex justify-center">
-        <nav className="pointer-events-auto flex items-center justify-between w-full bg-[#111]/70 backdrop-blur-2xl border border-white/10 rounded-[2rem] shadow-[0_20px_40px_rgba(0,0,0,0.4)] transition-all duration-300 hover:bg-[#151515]/80 hover:border-white/20 p-2 pl-8">
-          
-          <div className="flex items-center gap-6 md:gap-8 text-sm font-medium text-white/50">
-            <a href="#about" onClick={(e) => { e.preventDefault(); document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' }) }} className={`transition-colors ${activeSection === 'about' ? 'text-orange-500 font-bold' : 'hover:text-white'}`}>About</a>
-            <a href="#projects" onClick={(e) => { e.preventDefault(); document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' }) }} className={`transition-colors ${activeSection === 'projects' ? 'text-orange-500 font-bold' : 'hover:text-white'}`}>Works</a>
-            <a href="#experience" onClick={(e) => { e.preventDefault(); document.getElementById('experience')?.scrollIntoView({ behavior: 'smooth' }) }} className={`transition-colors ${activeSection === 'experience' ? 'text-orange-500 font-bold' : 'hover:text-white'}`}>Experience</a>
-          </div>
-          
-          <div className="flex items-center gap-5">
-            {/* 3D Switch */}
-            <div className="hidden md:flex items-center">
-              <label className="switch origin-right scale-[1.15] m-0">
-                <input type="checkbox" className="cb" checked={isLightMode} onChange={(e) => setIsLightMode(e.target.checked)} />
+      {/* --- BACKDROP FOR MOBILE MENU --- */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-40 bg-black/40 md:hidden"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* --- HEADER --- */}
+      <header className="fixed top-0 left-0 right-0 z-50">
+        {/* Desktop: Floating pill navbar */}
+        <div className="hidden md:flex justify-center pt-5 px-4">
+          <nav
+            className={`flex items-center justify-between w-full max-w-5xl h-[60px] px-6 lg:px-8 rounded-full border backdrop-blur-2xl transition-all duration-300 ${
+              isLightMode
+                ? 'bg-white/90 border-black/10 hover:border-black/20 text-[#111] shadow-[0_12px_32px_rgba(0,0,0,0.08)]'
+                : 'bg-[#111]/85 border-white/10 hover:border-white/20 text-[#F5F5F5] shadow-[0_16px_36px_rgba(0,0,0,0.5)]'
+            }`}
+            role="navigation"
+            aria-label="Main Navigation"
+          >
+            {/* Brand */}
+            <a
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+              className="flex items-center gap-2.5 group shrink-0"
+              aria-label="Scroll to top"
+            >
+              <div className="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm bg-[#FF5C00] text-white">
+                {profile.monogram}
+              </div>
+              <span className={`text-sm font-semibold tracking-tight ${
+                isLightMode ? 'text-black' : 'text-white'
+              }`}>
+                {profile.shortName}
+              </span>
+            </a>
+
+            {/* Desktop Nav Links */}
+            <div className="flex items-center gap-1.5 lg:gap-3">
+              {navItems.slice(0, 5).map((item) => {
+                const isActive = activeSection === item.id;
+                return (
+                  <a
+                    key={item.id}
+                    href={`#${item.id}`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleNavClick(item.id);
+                    }}
+                    className={`px-3.5 py-1.5 lg:px-4 lg:py-2 rounded-full text-[13px] lg:text-[14px] font-medium transition-colors duration-200 ${
+                      isActive
+                        ? 'text-[#FF5C00] font-semibold'
+                        : isLightMode
+                          ? 'text-black/55 hover:text-black hover:bg-black/5'
+                          : 'text-white/55 hover:text-white hover:bg-white/5'
+                    }`}
+                  >
+                    {item.label}
+                  </a>
+                );
+              })}
+            </div>
+
+            {/* Desktop Right Actions */}
+            <div className="flex items-center gap-4 lg:gap-5 shrink-0">
+              <label className="switch origin-right scale-[1.05] m-0" aria-label="Toggle theme">
+                <input
+                  type="checkbox"
+                  className="cb"
+                  checked={isLightMode}
+                  onChange={(e) => setIsLightMode(e.target.checked)}
+                />
                 <div className="toggle">
                   <span className="left">off</span>
                   <span className="right">on</span>
                 </div>
               </label>
+              <a
+                href="#contact"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleNavClick("contact");
+                }}
+                className="cssbuttons-io-button"
+                style={{ fontSize: '13px' }}
+              >
+                Hire Me
+                <div className="icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </div>
+              </a>
             </div>
-            
-            {/* Hire Me Button */}
-            <a href="#contact" onClick={(e) => { e.preventDefault(); document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }) }} className="cssbuttons-io-button" style={{ fontSize: '15px' }}>
-              Hire Me
-              <div className="icon">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-              </div>
-            </a>
-          </div>
+          </nav>
+        </div>
+
+        {/* Mobile: Clean compact header */}
+        <nav
+          className={`md:hidden flex items-center justify-between h-[60px] px-5 transition-colors duration-300 ${
+            isLightMode
+              ? 'bg-white/95 backdrop-blur-sm border-b border-black/[0.06]'
+              : 'bg-[#0A0A0A]/95 backdrop-blur-sm border-b border-white/[0.06]'
+          }`}
+          role="navigation"
+          aria-label="Mobile Navigation"
+        >
+          {/* Left: Logo */}
+          <a
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              setMobileMenuOpen(false);
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+            className="flex items-center gap-2.5"
+            aria-label="Scroll to top"
+          >
+            <div className="w-8 h-8 rounded-full bg-[#FF5C00] flex items-center justify-center text-white font-bold text-sm shrink-0">
+              {profile.monogram}
+            </div>
+            <span className={`text-[15px] font-semibold tracking-tight ${
+              isLightMode ? 'text-[#111]' : 'text-white'
+            }`}>
+              {profile.shortName}
+            </span>
+          </a>
+
+          {/* Right: Hamburger only */}
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className={`w-10 h-10 flex items-center justify-center rounded-lg transition-colors cursor-pointer ${
+              isLightMode
+                ? 'text-[#111] hover:bg-black/5 active:bg-black/10'
+                : 'text-white hover:bg-white/5 active:bg-white/10'
+            }`}
+            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileMenuOpen}
+          >
+            {mobileMenuOpen ? <X size={22} strokeWidth={1.8} /> : <Menu size={22} strokeWidth={1.8} />}
+          </button>
         </nav>
-      </div>
+
+        {/* --- MOBILE NAVIGATION DRAWER --- */}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: -4 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -4 }}
+              transition={{ duration: 0.18, ease: [0.25, 0.1, 0.25, 1] }}
+              className={`md:hidden absolute left-0 right-0 top-[60px] mx-4 rounded-2xl border overflow-hidden shadow-lg ${
+                isLightMode
+                  ? 'bg-white border-black/[0.08] shadow-[0_8px_30px_rgba(0,0,0,0.08)]'
+                  : 'bg-[#141414] border-white/[0.08] shadow-[0_8px_30px_rgba(0,0,0,0.4)]'
+              }`}
+            >
+              {/* Navigation Links */}
+              <div className="py-2">
+                {navItems.map((item, i) => {
+                  const Icon = item.icon;
+                  const isActive = activeSection === item.id;
+                  return (
+                    <button
+                      key={item.id}
+                      type="button"
+                      onClick={() => handleNavClick(item.id)}
+                      className={`w-full flex items-center gap-3.5 px-5 py-3 text-left transition-colors cursor-pointer ${
+                        isActive
+                          ? isLightMode
+                            ? 'bg-orange-50'
+                            : 'bg-white/[0.04]'
+                          : isLightMode
+                            ? 'hover:bg-gray-50'
+                            : 'hover:bg-white/[0.03]'
+                      }`}
+                    >
+                      <Icon
+                        size={18}
+                        strokeWidth={1.6}
+                        className={`shrink-0 ${
+                          isActive
+                            ? 'text-[#FF5C00]'
+                            : isLightMode ? 'text-black/40' : 'text-white/40'
+                        }`}
+                      />
+                      <div className="flex flex-col min-w-0">
+                        <span className={`text-[14px] leading-tight ${
+                          isActive
+                            ? 'text-[#FF5C00] font-semibold'
+                            : isLightMode ? 'text-[#111] font-medium' : 'text-white/90 font-medium'
+                        }`}>
+                          {item.label}
+                        </span>
+                        <span className={`text-[11px] leading-tight mt-0.5 ${
+                          isLightMode ? 'text-black/40' : 'text-white/35'
+                        }`}>
+                          {item.subtitle}
+                        </span>
+                      </div>
+                      {isActive && (
+                        <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[#FF5C00] shrink-0" />
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Divider */}
+              <div className={`mx-5 h-px ${isLightMode ? 'bg-black/[0.06]' : 'bg-white/[0.06]'}`} />
+
+              {/* Theme Toggle */}
+              <button
+                type="button"
+                onClick={() => setIsLightMode(!isLightMode)}
+                className={`w-full flex items-center gap-3.5 px-5 py-3 text-left transition-colors cursor-pointer ${
+                  isLightMode ? 'hover:bg-gray-50' : 'hover:bg-white/[0.03]'
+                }`}
+              >
+                {isLightMode
+                  ? <Moon size={18} strokeWidth={1.6} className="text-black/40 shrink-0" />
+                  : <Sun size={18} strokeWidth={1.6} className="text-white/40 shrink-0" />
+                }
+                <span className={`text-[14px] font-medium ${
+                  isLightMode ? 'text-[#111]' : 'text-white/90'
+                }`}>
+                  {isLightMode ? 'Dark mode' : 'Light mode'}
+                </span>
+              </button>
+
+              {/* Divider */}
+              <div className={`mx-5 h-px ${isLightMode ? 'bg-black/[0.06]' : 'bg-white/[0.06]'}`} />
+
+              {/* Actions */}
+              <div className="p-4 flex flex-col gap-2.5">
+                <a
+                  href="#contact"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleNavClick("contact");
+                  }}
+                  className="w-full h-11 rounded-xl bg-[#FF5C00] text-white text-[14px] font-semibold flex items-center justify-center gap-2 active:opacity-90 transition-opacity"
+                >
+                  Let&apos;s Talk
+                  <ArrowUpRight size={16} strokeWidth={2} />
+                </a>
+                <a
+                  href={profile.resumeFile}
+                  download
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`w-full h-10 rounded-xl text-[13px] font-medium flex items-center justify-center gap-2 transition-colors ${
+                    isLightMode
+                      ? 'text-black/60 hover:bg-black/[0.04]'
+                      : 'text-white/60 hover:bg-white/[0.04]'
+                  }`}
+                >
+                  <Download size={14} strokeWidth={1.8} />
+                  Download Resume
+                </a>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </header>
 
       {/* Main Content Wrapper */}
-      <main id="about" className="relative z-10 max-w-6xl mx-auto px-6 py-12 flex flex-col gap-12 pt-32">
+      <main id="about" className="relative z-10 max-w-6xl mx-auto px-6 py-12 flex flex-col gap-12 pt-24 md:pt-32">
         
         {/* --- HERO SECTION --- */}
         <Hero />
@@ -730,6 +1021,7 @@ export default function Home() {
 
         {/* --- CERTIFICATIONS --- */}
         <motion.section
+          id="certifications"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}

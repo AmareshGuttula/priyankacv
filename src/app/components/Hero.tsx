@@ -95,34 +95,40 @@ export default function Hero() {
       <div className="relative z-10 w-full max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-center gap-12 md:gap-20 lg:gap-32">
         
         {/* Left Side: Text Content */}
-        <div className="flex-1 space-y-6 max-w-2xl">
+        <div className="flex-1 space-y-5 max-w-2xl">
           <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1A1A1A]/80 backdrop-blur-sm border border-white/10 text-xs font-medium text-green-400">
-            Available
+            <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+            Available for opportunities
           </motion.div>
 
-          <motion.div variants={itemVariants} className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight flex flex-wrap items-center gap-x-4 sm:gap-x-5 py-4 z-20 relative">
-            <div className="relative w-[130px] sm:w-[160px] md:w-[200px] h-[1.2em]">
+          <motion.div variants={itemVariants} className="space-y-1">
+            {/* Animated greeting — compact on mobile */}
+            <div className="relative h-[1.3em] text-2xl sm:text-3xl md:text-4xl font-medium text-white/60">
               <AnimatePresence mode="wait">
                 <motion.span
                   key={index}
-                  initial={{ opacity: 0, y: 12, filter: "blur(8px)" }}
+                  initial={{ opacity: 0, y: 10, filter: "blur(6px)" }}
                   animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                  exit={{ opacity: 0, y: -12, filter: "blur(8px)" }}
-                  transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
+                  exit={{ opacity: 0, y: -10, filter: "blur(6px)" }}
+                  transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
                   className="absolute left-0"
                 >
                   {greetings[index]}
                 </motion.span>
               </AnimatePresence>
             </div>
-            <span>I am {profile.monogram}riyanka 👋</span>
+            {/* Main heading */}
+            <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight leading-[1.1]">
+              I am {profile.monogram}riyanka{" "}
+              <span className="inline-block">👋</span>
+            </h1>
           </motion.div>
 
-          <motion.p variants={itemVariants} className="text-[15px] md:text-[17px] leading-relaxed text-[#A8A8A3] max-w-lg">
+          <motion.p variants={itemVariants} className="text-[15px] sm:text-base md:text-[17px] leading-relaxed text-[#A8A8A3] max-w-lg">
             I am a {profile.role} focusing on Full Stack, AI, and Blockchain. Dedicated to building premium digital experiences from the first sketch to the final shipped product.
           </motion.p>
 
-          <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-4 pt-4">
+          <motion.div variants={itemVariants} className="flex items-center gap-3 pt-2">
             <a 
               href={profile.resumeFile} 
               target="_blank" 
@@ -136,7 +142,7 @@ export default function Hero() {
             </a>
             <a 
               href="#contact" 
-              className="cssbuttons-io-button ml-2"
+              className="cssbuttons-io-button"
             >
               Let&apos;s connect
               <div className="icon">

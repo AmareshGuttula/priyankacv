@@ -158,6 +158,25 @@
   left: -50px;
 }
 
+/* Mobile button scaling — fit side-by-side */
+@media (max-width: 430px) {
+  .cssbuttons-io-button {
+    font-size: 13px !important;
+    height: 2.5em;
+    padding-left: 1em;
+    padding-right: 2.8em;
+  }
+  .cssbuttons-io-button .icon {
+    height: 1.9em;
+    width: 1.9em;
+  }
+  .download-btn {
+    font-size: 13px;
+    height: 2.5em;
+    padding: 0 1.2em;
+  }
+}
+
 /* From Uiverse.io by r7chardgh */ 
 /* The switch - the box around the slider */
 .switch {
